@@ -1,0 +1,30 @@
+@import 'tailwindcss';
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #dbd9ec; */
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/* globals.css или tailwind.css */
+.transition-collapse {
+  transition-property: opacity, max-height, margin, padding;
+  transition-duration: 300ms;
+  transition-timing-function: ease;
+  overflow: hidden;
+  max-height: 1000px; /* достаточно большой max-height */
+}
+.transition-collapse.collapsed {
+  opacity: 0;
+  max-height: 0;
+  margin: 0;
+  padding: 0;
+}
