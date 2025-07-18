@@ -25,8 +25,8 @@ const Form: React.FC<FormProps> = ({
     try {
       const res = await axios.get(url);
 
-      // явная задержка в 1 сек
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // // явная задержка в 1 сек
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
 
       return res.data;
     } catch (error) {
@@ -45,7 +45,9 @@ const Form: React.FC<FormProps> = ({
   const handleAddRandomBook = async () => {
     setLoading(true);
     try {
-      const book = await fetchRandomBook('http://localhost:8000/book');
+      const book = await fetchRandomBook(
+        'https://apiforbookslibrary.onrender.com/book'
+      );
       if (book) {
         onAddRandomBook(book);
       }
