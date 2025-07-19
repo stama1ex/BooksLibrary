@@ -55,12 +55,12 @@ const SingleBook: React.FC<SingleBookProps> = ({
         {book.isFavorite ? (
           <StarFilled
             onClick={() => toggleFavorite(book.id)}
-            className="text-2xl select-none ml-4 transform transition-transform duration-200 hover:scale-125 origin-center active:scale-90"
+            className="text-2xl select-none ml-4 transform transition-transform duration-200 hover:scale-125 origin-center active:scale-90 !text-yellow-400"
           />
         ) : (
           <StarOutlined
             onClick={() => toggleFavorite(book.id)}
-            className="text-2xl select-none ml-4 transform transition-transform duration-200 hover:scale-125 origin-center active:scale-90"
+            className="text-2xl select-none ml-4 transform transition-transform duration-200 hover:scale-125 origin-center active:scale-90 text-gray-400"
           />
         )}
         <span

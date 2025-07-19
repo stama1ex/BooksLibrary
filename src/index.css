@@ -88,6 +88,13 @@
 }
 
 /* Пустое состояние */
+.ant-drawer-body .ant-empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
 .dark .ant-empty-description {
   color: #9ca3af;
 }
@@ -98,6 +105,7 @@
 }
 .dark .ant-drawer-body .ant-list-item-meta-description {
   color: #a8a8a8 !important;
+  word-break: break-all;
 }
 .dark .ant-drawer-body .ant-btn {
   color: #f9fafb !important; /* светлый цвет текста */
@@ -215,4 +223,26 @@
 
 .dark .Toastify__progress-bar {
   background: #3b82f6 !important; /* голубой прогресс */
+}
+#main-h1 {
+  background-color: #b9b9b9;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 2px 2px 2px rgba(255, 255, 255, 0.3);
+}
+
+.dark #main-h1 {
+  /* Тень светлая — как будто свет сверху, создавая эффект углубления */
+  text-shadow: none;
+  color: white;
+}
+#trash-btn {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.3s ease;
+}
+
+/* При наведении — ещё ярче */
+#trash-btn:hover {
+  box-shadow: 0 6px 20px rgba(255, 0, 0, 0.5);
 }

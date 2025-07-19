@@ -51,6 +51,7 @@ function App() {
           <Form />
           <div className="flex justify-center w-full rounded-2xl">
             <MyButton
+              id="trash-btn"
               onClick={() => setOpenTrash(true)}
               className="flex items-center !h-fit !w-full !p-2 justify-center shadow-2xl dark:hover:!text-red-400 hover:text-red-900 !border-none"
             >
