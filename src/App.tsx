@@ -9,7 +9,7 @@ import BookList from './components/BookList';
 import TrashDrawer from './components/TrashDrawer';
 import { useState } from 'react';
 import MyButton from './UI/MyButton';
-import ThemeToggleButton from './UI/themeToggleButton';
+import ThemeToggleButton from './UI/ThemeToggleButton';
 
 function App() {
   const [openTrash, setOpenTrash] = useState(false);
