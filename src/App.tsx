@@ -10,7 +10,6 @@ import { clearForm, trimForm, isValidForm } from './utils/formActions';
 
 function App() {
   const books = useBookStore((s) => s.books);
-  const setBooks = useBookStore((s) => s.setBooks);
   const addBook = useBookStore((s) => s.addBook);
   const [onlyFavorite, setOnlyFavorite] = useState(false);
   const [formData, setFormData] = useState<BookFormData>({
@@ -28,10 +27,6 @@ function App() {
   });
 
   const [combinedFilter, setCombinedFilter] = useState('');
-
-  useEffect(() => {
-    localStorage.setItem('books', JSON.stringify(books));
-  }, [books]);
 
   useEffect(() => {
     localStorage.setItem('filterMode', JSON.stringify(filterMode));
@@ -106,8 +101,7 @@ function App() {
           />
           <BookList
             filterData={filterData}
-            books={getFilteredBooks()}
-            setBooks={setBooks}
+            filteredBooks={getFilteredBooks()}
             filterMode={filterMode}
             combinedFilter={combinedFilter}
           />

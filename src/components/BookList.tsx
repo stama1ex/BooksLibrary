@@ -2,46 +2,31 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import type { DropResult } from '@hello-pangea/dnd';
 import SingleBook from './SingleBook';
 import type { Book, BookFormData } from '../types';
+import { useBookStore } from '../store/bookStore';
 
 interface BookListProps {
-  books: Book[];
+  filteredBooks: Book[];
   filterData: BookFormData;
-  setBooks: (books: Book[]) => void;
   filterMode: 'split' | 'combined';
   combinedFilter: string;
 }
 
 const BookList: React.FC<BookListProps> = ({
-  books,
-  setBooks,
+  filteredBooks,
   filterData,
   filterMode,
   combinedFilter,
 }) => {
+  const setBooks = useBookStore((s) => s.setBooks);
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
 
-    const reorderedBooks = Array.from(books);
+    const reorderedBooks = Array.from(filteredBooks);
     const [movedBook] = reorderedBooks.splice(result.source.index, 1);
     reorderedBooks.splice(result.destination.index, 0, movedBook);
 
     setBooks(reorderedBooks);
   };
-
-  const filteredBooks = books.filter((book) => {
-    if (filterMode === 'combined') {
-      const query = combinedFilter.toLowerCase();
-      return (
-        book.title.toLowerCase().includes(query) ||
-        book.author.toLowerCase().includes(query)
-      );
-    } else {
-      return (
-        book.title.toLowerCase().includes(filterData.title.toLowerCase()) &&
-        book.author.toLowerCase().includes(filterData.author.toLowerCase())
-      );
-    }
-  });
 
   return (
     <div className="flex flex-col p-8 bg-gray-700 rounded-2xl w-full shadow-2xl break-all">
