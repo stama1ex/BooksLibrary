@@ -37,10 +37,8 @@ const Filters: React.FC = () => {
 
   return (
     <div className="flex flex-col w-full p-4 bg-gray-700 rounded-2xl shadow-2xl">
-      <h1 className="text-white text-2xl text-center font-bold mb-4">
-        Filters
-      </h1>
-      <div className="flex flex-col md:flex-row items-center justify-between ">
+      <div className="flex flex-row justify-center items-center gap-4 mb-4">
+        <h1 className="text-white text-2xl text-center font-bold ">Filters</h1>
         <Space wrap>
           <Dropdown menu={{ items, onClick: handleMenuClick }}>
             <Button className="!bg-gray-800 !text-white !border-none !hover:bg-gray-600">
@@ -51,6 +49,9 @@ const Filters: React.FC = () => {
             </Button>
           </Dropdown>
         </Space>
+      </div>
+
+      <div className="flex flex-col items-center justify-center flex-wrap">
         {filterMode === 'combined' ? (
           <MyInput
             placeholder="Search title or author..."
@@ -58,7 +59,7 @@ const Filters: React.FC = () => {
             onChange={(e) => setCombinedFilter(e.target.value)}
           />
         ) : (
-          <>
+          <div className="flex flex-col md:flex-row w-full">
             <MyInput
               onChange={(e) =>
                 setFilterData({ ...filterData, title: e.target.value })
@@ -73,37 +74,38 @@ const Filters: React.FC = () => {
               value={filterData.author}
               placeholder="Filter by author..."
             />
-          </>
+          </div>
         )}
-        <div className="flex items-center gap-3 select-none">
-          <label
-            htmlFor="switch"
-            className="text-white whitespace-nowrap min-w-fit text-sm/6 font-semibold cursor-pointer"
-          >
-            Only Favorite
-          </label>
-          <Switch
-            id="switch"
-            checked={onlyFavorite}
-            onChange={() => setOnlyFavorite(!onlyFavorite)}
-            className={`relative inline-flex h-7 w-14 cursor-pointer rounded-full p-1 transition-colors duration-200 ease-in-out
+        <div className="flex flex-row gap-2 justify-center items-center">
+          <div className="flex justify-center items-center p-2 gap-3 select-none">
+            <label
+              htmlFor="switch"
+              className="text-white whitespace-nowrap min-w-fit text-sm/6 font-semibold cursor-pointer"
+            >
+              Only Favorite
+            </label>
+            <Switch
+              id="switch"
+              checked={onlyFavorite}
+              onChange={() => setOnlyFavorite(!onlyFavorite)}
+              className={`relative inline-flex h-7 w-14 cursor-pointer rounded-full p-1 transition-colors duration-200 ease-in-out
               ${onlyFavorite ? 'bg-gray-800' : 'bg-white/10'}
               focus:outline-none outline-white`}
-          >
-            <span
-              aria-hidden="true"
-              className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out
+            >
+              <span
+                aria-hidden="true"
+                className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out
                 ${onlyFavorite ? 'translate-x-7' : 'translate-x-0'}`}
-            />
-          </Switch>
+              />
+            </Switch>
+          </div>
+          <MyButton
+            onClick={resetFilters}
+            className="min-w-26 !justify-center shadow-2xl select-none"
+          >
+            Reset filters
+          </MyButton>
         </div>
-
-        <MyButton
-          onClick={resetFilters}
-          className="m-4 min-w-26 !justify-center shadow-2xl select-none"
-        >
-          Reset filters
-        </MyButton>
       </div>
     </div>
   );

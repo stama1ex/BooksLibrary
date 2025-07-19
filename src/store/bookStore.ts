@@ -5,6 +5,7 @@ import { persist, devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import type { Book, BookFormData } from '../types';
 import { createNewBook } from '../utils/createNewBook';
+import { useTrashStore } from './trashStore';
 
 interface BookStoreState {
   books: Readonly<Book[]>;
@@ -28,10 +29,18 @@ export const useBookStore = create<BookStoreState>()(
             state.books.push(createNewBook(data));
           }),
 
-        deleteBook: (id) =>
-          set((state: BookStoreState) => {
+        deleteBook: (id) => {
+          const bookToTrash = useBookStore
+            .getState()
+            .books.find((b) => b.id === id);
+          if (!bookToTrash) return;
+
+          set((state) => {
             state.books = state.books.filter((b) => b.id !== id);
-          }),
+          });
+
+          useTrashStore.getState().addToTrash({ ...bookToTrash });
+        },
 
         toggleFavorite: (id) =>
           set((state: BookStoreState) => {

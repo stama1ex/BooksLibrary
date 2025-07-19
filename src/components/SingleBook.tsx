@@ -3,6 +3,8 @@ import { highlightMatch } from '../utils/highlightMatch';
 import { useBookStore } from '../store/bookStore';
 import { useFilterStore } from '../store/filterStore';
 import type { Book } from '../types';
+import MyModal from '../UI/MyModal';
+import { useState } from 'react';
 
 interface SingleBookProps {
   isDragging?: boolean;
@@ -18,13 +20,26 @@ const SingleBook: React.FC<SingleBookProps> = ({
   const filterData = useFilterStore((s) => s.filterData);
   const filterMode = useFilterStore((s) => s.filterMode);
   const combinedFilter = useFilterStore((s) => s.combinedFilter);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleDeleteClick = () => {
+    if (book.isFavorite) {
+      setIsModalOpen(true);
+    } else {
+      deleteBook(book.id);
+    }
+  };
+
+  const handleConfirmDelete = () => {
+    deleteBook(book.id);
+    setIsModalOpen(false);
+  };
   return (
     <div
       className={`flex justify-between bg-gray-600 p-2 text-white border border-gray-500 rounded-sm transition-transform duration-200 ${
         isDragging ? 'scale-105 shadow-lg' : ''
       }`}
     >
-      <div className="flex flex-col break-normal">
+      <div className="flex flex-col break-all">
         <span className="font-semibold ml-2">
           {filterMode === 'combined'
             ? highlightMatch(book.title, combinedFilter || '')
@@ -49,11 +64,18 @@ const SingleBook: React.FC<SingleBookProps> = ({
           />
         )}
         <span
-          onClick={() => deleteBook(book.id)}
-          className="text-red-500 text-2xl cursor-pointer select-none mr-2 my-auto transform transition-transform duration-200 hover:scale-125 origin-center active:scale-90"
+          onClick={handleDeleteClick}
+          className="md:text-white md:hover:text-red-500 text-red-500 text-2xl cursor-pointer select-none mr-2 my-auto transform transition-all duration-200 hover:scale-125 origin-center active:scale-90"
         >
           <DeleteOutlined />
         </span>
+        <MyModal
+          open={isModalOpen}
+          onOk={handleConfirmDelete}
+          onCancel={() => setIsModalOpen(false)}
+          title="Move book to trash?"
+          content="This book is in your favorites. Are you sure you want to remove it?"
+        />
       </div>
     </div>
   );
