@@ -23,7 +23,7 @@ const SingleBook: React.FC<SingleBookProps> = ({
         isDragging ? 'scale-105 shadow-lg' : ''
       }`}
     >
-      <div className="flex flex-col">
+      <div className="flex flex-col break-normal">
         <span className="font-semibold ml-2">
           {highlightMatch(book.title, filterData.title)}
         </span>
