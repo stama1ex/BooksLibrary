@@ -4,35 +4,19 @@ import type { MenuProps } from 'antd';
 import { Button, Dropdown, Space } from 'antd';
 import MyInput from './../UI/MyInput';
 import { MyButton } from './../UI/MyButton';
-import type { BookFormData } from '../types';
+import { useFilterStore } from '../store/filterStore';
 
-interface FiltersProps {
-  filterData: BookFormData;
-  setFilterData: (data: BookFormData) => void;
-  onlyFavorite: boolean;
-  setOnlyFavorite: (flag: boolean) => void;
-  filterMode: 'split' | 'combined';
-  setFilterMode: (mode: 'split' | 'combined') => void;
-  combinedFilter: string;
-  setCombinedFilter: (val: string) => void;
-}
+const Filters: React.FC = () => {
+  const filterData = useFilterStore((s) => s.filterData);
+  const setFilterData = useFilterStore((s) => s.setFilterData);
+  const onlyFavorite = useFilterStore((s) => s.onlyFavorite);
+  const setOnlyFavorite = useFilterStore((s) => s.setOnlyFavorite);
+  const filterMode = useFilterStore((s) => s.filterMode);
+  const setFilterMode = useFilterStore((s) => s.setFilterMode);
+  const combinedFilter = useFilterStore((s) => s.combinedFilter);
+  const setCombinedFilter = useFilterStore((s) => s.setCombinedFilter);
+  const resetFilters = useFilterStore((s) => s.resetFilters);
 
-const Filters: React.FC<FiltersProps> = ({
-  filterData,
-  setFilterData,
-  onlyFavorite,
-  setOnlyFavorite,
-  filterMode,
-  setFilterMode,
-  combinedFilter,
-  setCombinedFilter,
-}) => {
-  const resetFilters = () => {
-    setFilterData({ title: '', author: '' });
-    setOnlyFavorite(false);
-    setCombinedFilter('');
-  };
-  //
   const items: MenuProps['items'] = [
     {
       key: 'combined',

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import Header from './UI/Header';
 import { ToastContainer, toast } from 'react-toastify';
 import Form from './components/Form';
@@ -9,61 +9,12 @@ import { useBookStore } from './store/bookStore';
 import { clearForm, trimForm, isValidForm } from './utils/formActions';
 
 function App() {
-  const books = useBookStore((s) => s.books);
   const addBook = useBookStore((s) => s.addBook);
-  const [onlyFavorite, setOnlyFavorite] = useState(false);
+
   const [formData, setFormData] = useState<BookFormData>({
     title: '',
     author: '',
   });
-  const [filterData, setFilterData] = useState<BookFormData>({
-    title: '',
-    author: '',
-  });
-
-  const [filterMode, setFilterMode] = useState<'split' | 'combined'>(() => {
-    const storedFilterMode = localStorage.getItem('filterMode');
-    return storedFilterMode ? JSON.parse(storedFilterMode) : 'split';
-  });
-
-  const [combinedFilter, setCombinedFilter] = useState('');
-
-  useEffect(() => {
-    localStorage.setItem('filterMode', JSON.stringify(filterMode));
-  }, [filterMode]);
-
-  const hasMounted = useRef(false);
-
-  useEffect(() => {
-    if (hasMounted.current) {
-      setFilterData({ title: '', author: '' });
-      setCombinedFilter('');
-    } else {
-      hasMounted.current = true;
-    }
-  }, [filterMode]);
-
-  const getFilteredBooks = () => {
-    return books.filter((book) => {
-      const matchesFavorite = onlyFavorite ? book.isFavorite === true : true;
-
-      if (filterMode === 'combined') {
-        const combined = `${book.title} ${book.author}`.toLowerCase();
-        return (
-          combined.includes(combinedFilter.toLowerCase()) && matchesFavorite
-        );
-      }
-
-      const matchesTitle = book.title
-        .toLowerCase()
-        .includes(filterData.title.toLowerCase());
-      const matchesAuthor = book.author
-        .toLowerCase()
-        .includes(filterData.author.toLowerCase());
-
-      return matchesTitle && matchesAuthor && matchesFavorite;
-    });
-  };
 
   const handleAddBook = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -89,22 +40,8 @@ function App() {
           setFormData={setFormData}
         />
         <div className="flex flex-col w-full md:w-auto gap-8 items-center justify-center mb-auto">
-          <Filters
-            filterData={filterData}
-            setFilterData={setFilterData}
-            onlyFavorite={onlyFavorite}
-            setOnlyFavorite={setOnlyFavorite}
-            filterMode={filterMode}
-            setFilterMode={setFilterMode}
-            combinedFilter={combinedFilter}
-            setCombinedFilter={setCombinedFilter}
-          />
-          <BookList
-            filterData={filterData}
-            filteredBooks={getFilteredBooks()}
-            filterMode={filterMode}
-            combinedFilter={combinedFilter}
-          />
+          <Filters />
+          <BookList />
         </div>
       </div>
     </>

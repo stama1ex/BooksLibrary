@@ -1,23 +1,14 @@
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import type { DropResult } from '@hello-pangea/dnd';
 import SingleBook from './SingleBook';
-import type { Book, BookFormData } from '../types';
 import { useBookStore } from '../store/bookStore';
+import { useFilteredBooks } from '../utils/hooks/useFilteredBooks';
 
-interface BookListProps {
-  filteredBooks: Book[];
-  filterData: BookFormData;
-  filterMode: 'split' | 'combined';
-  combinedFilter: string;
-}
-
-const BookList: React.FC<BookListProps> = ({
-  filteredBooks,
-  filterData,
-  filterMode,
-  combinedFilter,
-}) => {
+const BookList: React.FC = () => {
   const setBooks = useBookStore((s) => s.setBooks);
+
+  const filteredBooks = useFilteredBooks();
+
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
 
@@ -58,11 +49,8 @@ const BookList: React.FC<BookListProps> = ({
                         }}
                       >
                         <SingleBook
-                          filterData={filterData}
                           book={book}
                           isDragging={snapshot.isDragging}
-                          filterMode={filterMode}
-                          combinedFilter={combinedFilter}
                         />
                       </li>
                     )}

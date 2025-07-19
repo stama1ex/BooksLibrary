@@ -7,7 +7,7 @@ import type { Book, BookFormData } from '../types';
 import { createNewBook } from '../utils/createNewBook';
 
 interface BookStoreState {
-  books: Book[];
+  books: Readonly<Book[]>;
   isLoading: boolean;
   addBook: (data: BookFormData) => void;
   deleteBook: (id: string) => void;
@@ -68,6 +68,9 @@ export const useBookStore = create<BookStoreState>()(
     {
       name: 'book-store',
       version: 1,
+      partialize: (state) => ({
+        books: state.books,
+      }),
     }
   )
 );
