@@ -25,6 +25,7 @@ const MyModal: React.FC<MyModalProps> = ({
     onCancel={onCancel}
     okText="Confirm"
     cancelText="Cancel"
+    // className="!text-gray-800 !dark:text-white !dark:bg-gray-700"
   >
     {content}
   </Modal>

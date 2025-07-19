@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -27,4 +29,190 @@
   max-height: 0;
   margin: 0;
   padding: 0;
+}
+.dark .ant-drawer-content {
+  background-color: oklch(27.8% 0.033 256.848); /* глубокий тёмный фон */
+  color: #f3f4f6; /* светлый текст */
+  box-shadow: -8px 0 16px rgba(0, 0, 0, 0.5);
+}
+
+.dark .ant-drawer-header {
+  background-color: oklch(27.8% 0.033 256.848); /* чуть светлее шапка */
+  color: #f9fafb;
+  border-bottom: 1px solid #374151;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dark .ant-drawer-close {
+  color: #9ca3af; /* иконка закрытия */
+}
+.dark .ant-drawer-close:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .ant-drawer-title {
+  color: #e5e7eb;
+}
+
+.dark .ant-drawer-body {
+  background-color: #111827;
+  color: #e5e7eb;
+  padding: 1.5rem;
+}
+
+/* Кнопки */
+.dark .ant-btn {
+  color: #e5e7eb;
+  background-color: #1f2937;
+  border-color: #374151;
+}
+.dark .ant-btn:hover {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: white;
+}
+
+/* Списки */
+.ant-list-item {
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.dark .ant-list-item {
+  background-color: #1f2937;
+  padding: 0.75rem;
+  color: #f9fafb;
+}
+.dark .ant-list-item:hover {
+  background-color: #374151 !important;
+}
+
+/* Пустое состояние */
+.dark .ant-empty-description {
+  color: #9ca3af;
+}
+.dark .ant-drawer-body p,
+.dark .ant-drawer-body span,
+.dark .ant-drawer-body div {
+  color: white;
+}
+.dark .ant-drawer-body .ant-list-item-meta-description {
+  color: #a8a8a8 !important;
+}
+.dark .ant-drawer-body .ant-btn {
+  color: #f9fafb !important; /* светлый цвет текста */
+  background-color: transparent !important;
+  transition: color 0.3s ease- !important;
+}
+
+.dark .ant-drawer-body .ant-btn:hover,
+.dark .ant-drawer-body .ant-btn:focus {
+  color: #d1d5db !important; /* более тёмный светлый оттенок (например, Tailwind gray-300) */
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+/* Темный фон и светлый текст для Ant Design Modal в темной теме */
+.dark .ant-modal-content {
+  background-color: oklch(27.8% 0.033 256.848) !important; /* темный фон */
+  color: #e5e7eb !important; /* светлый текст */
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+}
+
+.dark .ant-modal-header {
+  background-color: oklch(27.8% 0.033 256.848) !important;
+  color: #f9fafb !important;
+  border-bottom: 1px solid #374151;
+}
+
+.dark .ant-modal-title {
+  color: #e5e7eb !important;
+}
+
+.dark .ant-modal-body {
+  color: #e5e7eb !important;
+  background-color: oklch(27.8% 0.033 256.848) !important;
+}
+
+.dark .ant-modal-footer {
+  background-color: #1f2937 !important;
+  border-top: 1px solid #374151;
+}
+
+/* Кнопки в модальном окне */
+.dark .ant-modal-footer .ant-btn {
+  background-color: transparent !important;
+  color: #f9fafb !important;
+  border: none !important;
+  transition: color 0.3s ease-in-out !important;
+  box-shadow: none !important;
+}
+
+.dark .ant-modal-footer .ant-btn:hover,
+.dark .ant-modal-footer .ant-btn:focus {
+  color: #d1d5db !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Для Popconfirm (если используется) */
+.dark .ant-popover-inner {
+  background-color: oklch(27.8% 0.033 256.848) !important;
+  color: #e5e7eb !important;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+}
+
+.dark .ant-popover-inner-content {
+  color: #e5e7eb !important;
+}
+
+/* Кнопки в Popconfirm */
+.dark .ant-popover-buttons .ant-btn {
+  background-color: transparent !important;
+  color: #f9fafb !important;
+  border: none !important;
+  box-shadow: none !important;
+  transition: color 0.3s ease-in-out !important;
+}
+
+.dark .ant-popover-buttons .ant-btn:hover,
+.dark .ant-popover-buttons .ant-btn:focus {
+  color: #d1d5db !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.dark .ant-popover-inner .ant-popconfirm-title {
+  color: white !important;
+}
+.dark .ant-dropdown-menu {
+  background-color: oklch(27.8% 0.033 256.848) !important; /* тёмный фон */
+  color: #e5e7eb !important; /* светлый текст */
+  border-radius: 0.5rem !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7) !important;
+  padding: 0.5rem 0 !important;
+}
+
+.dark .ant-dropdown-menu-item {
+  color: #e5e7eb !important;
+  padding: 0.5rem 1rem !important;
+}
+
+.dark .ant-dropdown-menu-item:hover,
+.dark .ant-dropdown-menu-item-active {
+  background-color: #374151 !important;
+  color: white !important;
+}
+/* Toast: сообщение Ant Design (message, notification) */
+.dark .Toastify__toast {
+  background-color: #1f2937 !important;
+  color: #f9fafb !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+}
+
+.dark .Toastify__progress-bar {
+  background: #3b82f6 !important; /* голубой прогресс */
 }

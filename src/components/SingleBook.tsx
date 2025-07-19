@@ -35,7 +35,7 @@ const SingleBook: React.FC<SingleBookProps> = ({
   };
   return (
     <div
-      className={`flex justify-between bg-gray-600 p-2 text-white border border-gray-500 rounded-sm transition-transform duration-200 ${
+      className={`flex justify-between bg-gray-100 dark:bg-gray-600 p-2 text-gray-800 dark:text-white border border-gray-300 dark:border-gray-500 rounded-sm transition-colors duration-200 ${
         isDragging ? 'scale-105 shadow-lg' : ''
       }`}
     >
@@ -45,7 +45,7 @@ const SingleBook: React.FC<SingleBookProps> = ({
             ? highlightMatch(book.title, combinedFilter || '')
             : highlightMatch(book.title, filterData.title)}
         </span>
-        <span className="text-sm text-gray-300 ml-2">
+        <span className="text-sm text-gray-500 dark:text-gray-300 ml-2">
           {filterMode === 'combined'
             ? highlightMatch(book.author, combinedFilter || '')
             : highlightMatch(book.author, filterData.author)}
@@ -65,7 +65,7 @@ const SingleBook: React.FC<SingleBookProps> = ({
         )}
         <span
           onClick={handleDeleteClick}
-          className="md:text-white md:hover:text-red-500 text-red-500 text-2xl cursor-pointer select-none mr-2 my-auto transform transition-all duration-200 hover:scale-125 origin-center active:scale-90"
+          className="dark:md:text-white md:text-gray-800  md:hover:text-red-500 text-red-500 text-2xl cursor-pointer select-none mr-2 my-auto transform transition-all duration-200 hover:scale-125 origin-center active:scale-90"
         >
           <DeleteOutlined />
         </span>

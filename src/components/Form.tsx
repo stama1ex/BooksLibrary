@@ -14,9 +14,9 @@ const Form: React.FC = () => {
   return (
     <form
       onSubmit={useAddBookHandler()}
-      className="flex flex-col w-full md:w-auto p-8 bg-gray-700 rounded-2xl mb-auto shadow-2xl"
+      className="flex flex-col w-full md:w-auto p-8 bg-gray-200 dark:bg-gray-700 transition-colors duration-200 rounded-2xl mb-auto shadow-2xl"
     >
-      <h1 className="text-white text-2xl font-bold text-center">
+      <h1 className="dark:text-white text-gray-800 text-2xl font-bold text-center">
         Add a New Book
       </h1>
       <MyInput
@@ -42,7 +42,7 @@ const Form: React.FC = () => {
       <MyButton type="submit" className="!justify-center m-4 shadow-2xl">
         Add book
       </MyButton>
-      <hr className="mb-4 border-gray-600" />
+      <hr className="mb-4 dark:border-gray-600 border-gray-300" />
 
       <MyButton
         type="button"

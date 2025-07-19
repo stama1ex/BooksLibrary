@@ -20,8 +20,8 @@ const BookList: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col p-8 bg-gray-700 rounded-2xl w-full shadow-2xl break-all">
-      <h1 className="text-white text-2xl font-bold text-center mb-8">
+    <div className="flex flex-col p-8 bg-gray-200 dark:bg-gray-700 transition-colors duration-200 rounded-2xl w-full shadow-2xl break-all">
+      <h1 className="text-gray-800 dark:text-white text-2xl font-bold text-center mb-8">
         Book List
       </h1>
       {filteredBooks.length > 0 ? (
@@ -62,7 +62,7 @@ const BookList: React.FC = () => {
           </Droppable>
         </DragDropContext>
       ) : (
-        <h2 className="text-gray-400 text-xl font-normal text-center">
+        <h2 className="text-gray-400 dark:text-gray-300 text-xl font-normal text-center">
           It is empty now
         </h2>
       )}

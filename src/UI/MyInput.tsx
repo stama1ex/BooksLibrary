@@ -14,9 +14,11 @@ const MyInput = forwardRef<HTMLInputElement, MyInputProps>(
     return (
       <div className="w-full min-w-[150px] px-2">
         <Field className="my-2 w-full">
-          <Label className="text-sm/6 font-medium text-gray-300">{label}</Label>
+          <Label className="text-sm/6 font-medium text-gray-800 dark:text-gray-300">
+            {label}
+          </Label>
           {description && (
-            <Description className="text-sm/6 text-white/50">
+            <Description className="text-sm/6 text-gray-500 dark:text-white/50">
               {description}
             </Description>
           )}
@@ -25,8 +27,8 @@ const MyInput = forwardRef<HTMLInputElement, MyInputProps>(
             ref={ref}
             {...props}
             className={clsx(
-              'mt-0 block w-full min-w-0 max-w-full rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-white',
-              'focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25',
+              'mt-0 block w-full min-w-0 max-w-full rounded-lg border-none bg-white/80 dark:bg-white/5 px-3 py-1.5 text-sm/6 text-gray-800 dark:text-white',
+              'focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25 transition-colors duration-200',
               className
             )}
             style={{ width: '100%' }}

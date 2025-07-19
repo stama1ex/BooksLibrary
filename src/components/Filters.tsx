@@ -1,6 +1,6 @@
 import { Switch } from '@headlessui/react';
 import type { MenuProps } from 'antd';
-import { Button, Dropdown, Space } from 'antd';
+import { Dropdown, Space } from 'antd';
 import { DownOutlined, FilterOutlined } from '@ant-design/icons';
 import MyInput from './../UI/MyInput';
 import { MyButton } from './../UI/MyButton';
@@ -36,17 +36,19 @@ const Filters: React.FC = () => {
   //
 
   return (
-    <div className="flex flex-col w-full p-4 bg-gray-700 rounded-2xl shadow-2xl">
+    <div className="flex flex-col w-full p-4 bg-gray-200 dark:bg-gray-700 transition-colors duration-200 rounded-2xl shadow-2xl">
       <div className="flex flex-row justify-center items-center gap-4 mb-4">
-        <h1 className="text-white text-2xl text-center font-bold ">Filters</h1>
+        <h1 className="text-gray-800 dark:text-white text-2xl text-center font-bold">
+          Filters
+        </h1>
         <Space wrap>
           <Dropdown menu={{ items, onClick: handleMenuClick }}>
-            <Button className="!bg-gray-800 !text-white !border-none !hover:bg-gray-600">
+            <MyButton>
               <Space>
                 {filterMode === 'split' ? 'Split Filter' : 'Combined Filter'}
                 <DownOutlined />
               </Space>
-            </Button>
+            </MyButton>
           </Dropdown>
         </Space>
       </div>
@@ -80,22 +82,23 @@ const Filters: React.FC = () => {
           <div className="flex justify-center items-center p-2 gap-3 select-none">
             <label
               htmlFor="switch"
-              className="text-white whitespace-nowrap min-w-fit text-sm/6 font-semibold cursor-pointer"
+              className="text-gray-800 dark:text-white whitespace-nowrap min-w-fit text-sm/6 font-semibold cursor-pointer"
             >
               Only Favorite
             </label>
+            {/* ! */}
             <Switch
               id="switch"
               checked={onlyFavorite}
               onChange={() => setOnlyFavorite(!onlyFavorite)}
               className={`relative inline-flex h-7 w-14 cursor-pointer rounded-full p-1 transition-colors duration-200 ease-in-out
               ${onlyFavorite ? 'bg-gray-800' : 'bg-white/10'}
-              focus:outline-none outline-white`}
+              focus:outline-none outline-white !shadow-[0_8px_32px_0_rgba(0,0,0,0.15)]`}
             >
               <span
                 aria-hidden="true"
-                className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out
-                ${onlyFavorite ? 'translate-x-7' : 'translate-x-0'}`}
+                className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white !shadow-[0_8px_32px_0_rgba(0,0,0,0.35)] ring-0 transition duration-200 ease-in-out
+              ${onlyFavorite ? 'translate-x-7' : 'translate-x-0'}`}
               />
             </Switch>
           </div>
