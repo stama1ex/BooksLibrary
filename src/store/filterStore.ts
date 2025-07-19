@@ -10,11 +10,13 @@ interface FilterState {
   filterData: BookFormData;
   combinedFilter: string;
   filterMode: FilterMode;
+  formData: BookFormData;
 
   setOnlyFavorite: (flag: boolean) => void;
   setFilterData: (data: BookFormData) => void;
   setCombinedFilter: (value: string) => void;
   setFilterMode: (mode: FilterMode) => void;
+  setFormData: (data: BookFormData) => void;
   resetFilters: () => void;
 }
 
@@ -26,6 +28,7 @@ export const useFilterStore = create<FilterState>()(
         filterData: { title: '', author: '' },
         combinedFilter: '',
         filterMode: 'split',
+        formData: { title: '', author: '' },
 
         setOnlyFavorite: (flag) =>
           set((state) => {
@@ -47,6 +50,11 @@ export const useFilterStore = create<FilterState>()(
             state.filterMode = mode;
             state.filterData = { title: '', author: '' };
             state.combinedFilter = '';
+          }),
+
+        setFormData: (data) =>
+          set((state) => {
+            state.formData = data;
           }),
 
         resetFilters: () =>

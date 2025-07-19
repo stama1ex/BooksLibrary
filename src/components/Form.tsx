@@ -1,22 +1,19 @@
 import MyInput from './../UI/MyInput';
 import { MyButton } from './../UI/MyButton';
-import type { BookFormData } from '../types';
 import clsx from 'clsx';
 import { useBookStore } from '../store/bookStore';
+import { useFilterStore } from '../store/filterStore';
+import { useAddBookHandler } from '../utils/hooks/useHandleAddBook';
 
-interface FormProps {
-  formData: BookFormData;
-  setFormData: (data: BookFormData) => void;
-  onAddBook: (e: React.FormEvent<HTMLFormElement>) => void;
-}
-
-const Form: React.FC<FormProps> = ({ formData, setFormData, onAddBook }) => {
+const Form: React.FC = () => {
   const isLoading = useBookStore((s) => s.isLoading);
   const fetchAndAddRandomBook = useBookStore((s) => s.fetchAndAddRandomBook);
+  const formData = useFilterStore((s) => s.formData);
+  const setFormData = useFilterStore((s) => s.setFormData);
 
   return (
     <form
-      onSubmit={onAddBook}
+      onSubmit={useAddBookHandler()}
       className="flex flex-col w-full md:w-auto p-8 bg-gray-700 rounded-2xl mb-auto shadow-2xl"
     >
       <h1 className="text-white text-2xl font-bold text-center">
