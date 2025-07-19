@@ -1,12 +1,11 @@
 import { StarOutlined, StarFilled, DeleteOutlined } from '@ant-design/icons';
 import { highlightMatch } from '../utils/highlightMatch';
 import type { Book, BookFormData } from '../types';
+import { useBookStore } from '../store/bookStore';
 
 interface SingleBookProps {
   filterData: BookFormData;
   book: Book;
-  deleteBook: (id: string) => void;
-  toggleFavorite: (id: string) => void;
   isDragging?: boolean;
   filterMode?: 'split' | 'combined';
   combinedFilter?: string;
@@ -15,12 +14,12 @@ interface SingleBookProps {
 const SingleBook: React.FC<SingleBookProps> = ({
   filterData,
   book,
-  deleteBook,
-  toggleFavorite,
   isDragging = false,
   filterMode,
   combinedFilter,
 }) => {
+  const deleteBook = useBookStore((s) => s.deleteBook);
+  const toggleFavorite = useBookStore((s) => s.toggleFavorite);
   return (
     <div
       className={`flex justify-between bg-gray-600 p-2 text-white border border-gray-500 rounded-sm transition-transform duration-200 ${

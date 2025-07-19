@@ -1,60 +1,18 @@
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { useState } from 'react';
 import MyInput from './../UI/MyInput';
 import { MyButton } from './../UI/MyButton';
-import type { Book, BookFormData } from '../types';
+import type { BookFormData } from '../types';
 import clsx from 'clsx';
+import { useBookStore } from '../store/bookStore';
 
 interface FormProps {
   formData: BookFormData;
   setFormData: (data: BookFormData) => void;
   onAddBook: (e: React.FormEvent<HTMLFormElement>) => void;
-  onAddRandomBook: (book: Book) => void;
 }
 
-const Form: React.FC<FormProps> = ({
-  formData,
-  setFormData,
-  onAddBook,
-  onAddRandomBook,
-}) => {
-  const [loading, setLoading] = useState(false);
-
-  const fetchRandomBook = async (url: string) => {
-    try {
-      const res = await axios.get(url);
-
-      // // явная задержка в 1 сек
-      // await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      return res.data;
-    } catch (error) {
-      let message = 'Unknown error occurred';
-
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data?.message || error.message;
-      } else if (error instanceof Error) {
-        message = error.message;
-      }
-
-      toast.error(message);
-    }
-  };
-
-  const handleAddRandomBook = async () => {
-    setLoading(true);
-    try {
-      const book = await fetchRandomBook(
-        'https://apiforbookslibrary.onrender.com/book'
-      );
-      if (book) {
-        onAddRandomBook(book);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+const Form: React.FC<FormProps> = ({ formData, setFormData, onAddBook }) => {
+  const isLoading = useBookStore((s) => s.isLoading);
+  const fetchAndAddRandomBook = useBookStore((s) => s.fetchAndAddRandomBook);
 
   return (
     <form
@@ -91,15 +49,17 @@ const Form: React.FC<FormProps> = ({
 
       <MyButton
         type="button"
-        onClick={handleAddRandomBook}
-        disabled={loading}
+        onClick={() =>
+          fetchAndAddRandomBook('https://apiforbookslibrary.onrender.com/book')
+        }
+        disabled={isLoading}
         className={clsx(
           'justify-center shadow-2xl flex items-center gap-2 mx-4',
-          loading &&
+          isLoading &&
             'opacity-50 cursor-not-allowed pointer-events-none hover:bg-inherit'
         )}
       >
-        {loading && (
+        {isLoading && (
           <svg
             className="animate-spin h-5 w-5 text-white"
             xmlns="http://www.w3.org/2000/svg"
@@ -121,7 +81,7 @@ const Form: React.FC<FormProps> = ({
             ></path>
           </svg>
         )}
-        {loading ? 'Loading...' : 'Add random via API'}
+        {isLoading ? 'Loading...' : 'Add random via API'}
       </MyButton>
     </form>
   );

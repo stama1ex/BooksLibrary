@@ -18,18 +18,6 @@ const BookList: React.FC<BookListProps> = ({
   filterMode,
   combinedFilter,
 }) => {
-  const handleDelete = (id: string) => {
-    const updated = books.filter((book) => book.id !== id);
-    setBooks(updated);
-  };
-
-  const handleToggleFavorite = (id: string) => {
-    const updated = books.map((book) =>
-      book.id === id ? { ...book, isFavorite: !book.isFavorite } : book
-    );
-    setBooks(updated);
-  };
-
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
 
@@ -86,8 +74,6 @@ const BookList: React.FC<BookListProps> = ({
                       >
                         <SingleBook
                           filterData={filterData}
-                          toggleFavorite={handleToggleFavorite}
-                          deleteBook={handleDelete}
                           book={book}
                           isDragging={snapshot.isDragging}
                           filterMode={filterMode}

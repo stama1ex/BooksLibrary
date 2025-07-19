@@ -18,13 +18,15 @@
     "axios": "^1.10.0",
     "clsx": "^2.1.1",
     "gh-pages": "^6.3.0",
+    "immer": "^10.1.1",
     "match-sorter": "^8.0.3",
     "motion": "^12.23.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-toastify": "^11.0.5",
     "tailwindcss": "^4.1.11",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",

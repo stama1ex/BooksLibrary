@@ -4,10 +4,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import Form from './components/Form';
 import Filters from './components/Filters';
 import BookList from './components/BookList';
-import type { Book, BookFormData } from './types';
-import { createNewBook } from './utils/createNewBook';
+import type { BookFormData } from './types';
+import { useBookStore } from './store/bookStore';
+import { clearForm, trimForm, isValidForm } from './utils/formActions';
 
 function App() {
+  const books = useBookStore((s) => s.books);
+  const setBooks = useBookStore((s) => s.setBooks);
+  const addBook = useBookStore((s) => s.addBook);
   const [onlyFavorite, setOnlyFavorite] = useState(false);
   const [formData, setFormData] = useState<BookFormData>({
     title: '',
@@ -16,10 +20,6 @@ function App() {
   const [filterData, setFilterData] = useState<BookFormData>({
     title: '',
     author: '',
-  });
-  const [books, setBooks] = useState<Book[]>(() => {
-    const storedBooks = localStorage.getItem('books');
-    return storedBooks ? JSON.parse(storedBooks) : [];
   });
 
   const [filterMode, setFilterMode] = useState<'split' | 'combined'>(() => {
@@ -70,39 +70,16 @@ function App() {
     });
   };
 
-  const trimForm = (data: BookFormData): BookFormData => ({
-    title: data.title.trim(),
-    author: data.author.trim(),
-  });
-
-  const clearForm = (): BookFormData => ({
-    title: '',
-    author: '',
-  });
-
-  const isValidForm = (data: BookFormData): boolean => {
-    return data.title !== '' && data.author !== '';
-  };
-
   const handleAddBook = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const trimmed = trimForm(formData);
 
     if (isValidForm(trimmed)) {
-      setBooks((prev) => [...prev, createNewBook(trimmed)]);
+      addBook(trimmed);
       setFormData(clearForm());
     } else {
       toast.info('Please fill in all fields');
-    }
-  };
-  const handleAddRandomBook = (book: BookFormData) => {
-    const trimmed = trimForm(book);
-
-    if (isValidForm(trimmed)) {
-      setBooks((prev) => [...prev, createNewBook(trimmed)]);
-    } else {
-      toast.error('Random book has invalid data');
     }
   };
 
@@ -112,10 +89,9 @@ function App() {
       <ToastContainer />
       <div className="flex flex-row flex-wrap items-center justify-center w-full md:p-12 p-4 gap-8 rounded-2xl md:w-full max-w-full mx-auto">
         <Form
+          onAddBook={handleAddBook}
           formData={formData}
           setFormData={setFormData}
-          onAddBook={handleAddBook}
-          onAddRandomBook={handleAddRandomBook}
         />
         <div className="flex flex-col w-full md:w-auto gap-8 items-center justify-center mb-auto">
           <Filters
