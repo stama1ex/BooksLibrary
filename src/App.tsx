@@ -1,10 +1,25 @@
-import Header from './UI/Header';
+import axios from 'axios';
+import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
+import Header from './UI/Header';
 import Form from './components/Form';
 import Filters from './components/Filters';
 import BookList from './components/BookList';
 
 function App() {
+  useEffect(() => {
+    const wakeUpServer = async () => {
+      try {
+        await axios.get('https://apiforbookslibrary.onrender.com/book');
+        console.log('Server is awake!');
+      } catch (err) {
+        console.warn('Failed to wake server:', err);
+      }
+    };
+
+    wakeUpServer();
+  }, []);
+
   return (
     <>
       <Header />

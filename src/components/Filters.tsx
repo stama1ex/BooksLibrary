@@ -1,7 +1,7 @@
 import { Switch } from '@headlessui/react';
-import { DownOutlined, FilterOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Button, Dropdown, Space } from 'antd';
+import { DownOutlined, FilterOutlined } from '@ant-design/icons';
 import MyInput from './../UI/MyInput';
 import { MyButton } from './../UI/MyButton';
 import { useFilterStore } from '../store/filterStore';
