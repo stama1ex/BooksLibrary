@@ -4,12 +4,20 @@ import SingleBook from './SingleBook';
 import type { Book, BookFormData } from '../types';
 
 interface BookListProps {
-  filterData: BookFormData;
   books: Book[];
+  filterData: BookFormData;
   setBooks: (books: Book[]) => void;
+  filterMode: 'split' | 'combined';
+  combinedFilter: string;
 }
 
-const BookList: React.FC<BookListProps> = ({ books, setBooks, filterData }) => {
+const BookList: React.FC<BookListProps> = ({
+  books,
+  setBooks,
+  filterData,
+  filterMode,
+  combinedFilter,
+}) => {
   const handleDelete = (id: string) => {
     const updated = books.filter((book) => book.id !== id);
     setBooks(updated);
@@ -32,12 +40,27 @@ const BookList: React.FC<BookListProps> = ({ books, setBooks, filterData }) => {
     setBooks(reorderedBooks);
   };
 
+  const filteredBooks = books.filter((book) => {
+    if (filterMode === 'combined') {
+      const query = combinedFilter.toLowerCase();
+      return (
+        book.title.toLowerCase().includes(query) ||
+        book.author.toLowerCase().includes(query)
+      );
+    } else {
+      return (
+        book.title.toLowerCase().includes(filterData.title.toLowerCase()) &&
+        book.author.toLowerCase().includes(filterData.author.toLowerCase())
+      );
+    }
+  });
+
   return (
     <div className="flex flex-col p-8 bg-gray-700 rounded-2xl w-full shadow-2xl break-all">
       <h1 className="text-white text-2xl font-bold text-center mb-8">
         Book List
       </h1>
-      {books.length > 0 ? (
+      {filteredBooks.length > 0 ? (
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="books-droppable">
             {(provided) => (
@@ -46,7 +69,7 @@ const BookList: React.FC<BookListProps> = ({ books, setBooks, filterData }) => {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {books.map((book, index) => (
+                {filteredBooks.map((book, index) => (
                   <Draggable key={book.id} draggableId={book.id} index={index}>
                     {(provided, snapshot) => (
                       <li
@@ -67,6 +90,8 @@ const BookList: React.FC<BookListProps> = ({ books, setBooks, filterData }) => {
                           deleteBook={handleDelete}
                           book={book}
                           isDragging={snapshot.isDragging}
+                          filterMode={filterMode}
+                          combinedFilter={combinedFilter}
                         />
                       </li>
                     )}

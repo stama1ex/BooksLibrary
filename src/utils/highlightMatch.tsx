@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
 export function highlightMatch(text: string, query: string): ReactNode {
-  if (!text) return <></>; // <-- добавь это
+  if (!text) return <>{text}</>;
   if (!query) return <>{text}</>;
 
   const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

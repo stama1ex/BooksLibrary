@@ -8,6 +8,8 @@ interface SingleBookProps {
   deleteBook: (id: string) => void;
   toggleFavorite: (id: string) => void;
   isDragging?: boolean;
+  filterMode?: 'split' | 'combined';
+  combinedFilter?: string;
 }
 
 const SingleBook: React.FC<SingleBookProps> = ({
@@ -16,6 +18,8 @@ const SingleBook: React.FC<SingleBookProps> = ({
   deleteBook,
   toggleFavorite,
   isDragging = false,
+  filterMode,
+  combinedFilter,
 }) => {
   return (
     <div
@@ -25,10 +29,14 @@ const SingleBook: React.FC<SingleBookProps> = ({
     >
       <div className="flex flex-col break-normal">
         <span className="font-semibold ml-2">
-          {highlightMatch(book.title, filterData.title)}
+          {filterMode === 'combined'
+            ? highlightMatch(book.title, combinedFilter || '')
+            : highlightMatch(book.title, filterData.title)}
         </span>
         <span className="text-sm text-gray-300 ml-2">
-          {highlightMatch(book.author, filterData.author)}
+          {filterMode === 'combined'
+            ? highlightMatch(book.author, combinedFilter || '')
+            : highlightMatch(book.author, filterData.author)}
         </span>
       </div>
       <div className="flex flex-row gap-4 shrink-0">
