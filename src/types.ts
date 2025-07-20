@@ -13,5 +13,7 @@ export interface BookFormData {
 
 export interface TrashedBook extends Book {
   deletedFromFolderLabel?: string;
-  deletedAt: string; // строка в формате dayjs
+  deletedAt: string;
+  originalFolderKey: string;
+  originalFolderLabel: string;
 }

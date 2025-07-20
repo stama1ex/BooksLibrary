@@ -3,15 +3,15 @@ import { useFolderStore } from '../../store/folderStore';
 import BookList from '../BookList';
 import { EditableTabLabel } from './EditableTabLabel';
 import MyModal from '../../UI/MyModal';
-import { useModalStore } from '../../store/modalStore';
+import { useState } from 'react';
+import { useBookStore } from '../../store/bookStore';
 
 export const FolderTabs = () => {
-  const isModalOpen = useModalStore((s) => s.isModalOpen);
-  const setIsModalOpen = useModalStore((s) => s.setIsModalOpen);
-  const folderToDeleteKey = useModalStore((s) => s.folderToDeleteKey);
-  const setFolderToDeleteKey = useModalStore((s) => s.setFolderToDeleteKey);
-  const modalType = useModalStore((s) => s.modalType);
-  const setModalType = useModalStore((s) => s.setModalType);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [folderKeyToDelete, setFolderKeyToDelete] = useState<string | null>(
+    null
+  );
+
   const {
     folders,
     activeFolderKey,
@@ -21,19 +21,6 @@ export const FolderTabs = () => {
     setEditingFolderKey,
     editingFolderKey,
   } = useFolderStore();
-
-  const handleConfirmDelete = () => {
-    removeFolder(folderToDeleteKey);
-    setIsModalOpen(false);
-    setFolderToDeleteKey('');
-    setModalType(null);
-  };
-
-  const handleCancelDelete = () => {
-    setIsModalOpen(false);
-    setModalType(null);
-    setFolderToDeleteKey('');
-  };
 
   return (
     <div className="flex flex-col p-8 bg-gray-200 dark:bg-gray-700 transition-colors duration-200 rounded-2xl w-full shadow-2xl break-all">
@@ -50,11 +37,13 @@ export const FolderTabs = () => {
             const newName = prompt('Enter folder name:');
             if (newName) addFolder(newName);
           } else if (action === 'remove' && typeof targetKey === 'string') {
-            const folder = folders.find((folder) => folder.key === targetKey);
-            if (folder?.bookIds.length) {
-              setModalType('folder-delete');
-              setFolderToDeleteKey(targetKey);
-              setIsModalOpen(true);
+            const booksInFolder = useBookStore
+              .getState()
+              .books.filter((book) => book.folderId === targetKey);
+
+            if (booksInFolder.length > 0) {
+              setFolderKeyToDelete(targetKey);
+              setIsDeleteModalOpen(true);
             } else {
               removeFolder(targetKey);
             }
@@ -78,11 +67,20 @@ export const FolderTabs = () => {
 
       <BookList folderId={activeFolderKey} />
       <MyModal
-        open={isModalOpen && modalType === 'folder-delete'}
-        onOk={handleConfirmDelete}
-        onCancel={handleCancelDelete}
-        title="Delete folder with books?"
+        open={isDeleteModalOpen}
+        title="Delete folder?"
         content="This folder contains books. Are you sure you want to delete it?"
+        onOk={() => {
+          if (folderKeyToDelete) {
+            removeFolder(folderKeyToDelete);
+          }
+          setIsDeleteModalOpen(false);
+          setFolderKeyToDelete(null);
+        }}
+        onCancel={() => {
+          setIsDeleteModalOpen(false);
+          setFolderKeyToDelete(null);
+        }}
       />
     </div>
   );

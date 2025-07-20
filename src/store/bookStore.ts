@@ -52,13 +52,15 @@ export const useBookStore = create<BookStoreState>()(
 
           useTrashStore.getState().addToTrash({
             ...bookToTrash,
-            deletedAt: new Date().toISOString(), // вот это!
+            deletedAt: new Date().toISOString(),
             deletedFromFolderLabel: folder?.label,
+            originalFolderKey: bookToTrash.folderId ?? 'unknown',
+            originalFolderLabel: folder?.label ?? 'Unknown Folder',
           });
         },
 
         toggleFavorite: (id) =>
-          set((state: BookStoreState) => {
+          set((state) => {
             const book = state.books.find((b) => b.id === id);
             if (book) book.isFavorite = !book.isFavorite;
           }),

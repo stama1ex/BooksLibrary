@@ -14,7 +14,7 @@ interface FolderStoreState {
   editingFolderKey: string | null; // новое поле для текущей редактируемой папки
   setActiveFolder: (key: string) => void;
   setEditingFolderKey: (key: string | null) => void; // новое действие
-  addFolder: (label?: string) => string; // возвращает ключ новой папки
+  addFolder: (label?: string, key?: string) => string; // возвращает ключ новой папки
   removeFolder: (key: string) => void;
   renameFolder: (key: string, newLabel: string) => void;
   moveBookToFolder: (bookId: string, targetFolderKey: string) => void;
@@ -37,20 +37,25 @@ export const useFolderStore = create<FolderStoreState>()(
             state.editingFolderKey = key;
           }),
 
-        addFolder: (label) => {
+        addFolder: (label, key?) => {
           let newKey = '';
           set((state) => {
-            newKey = `folder-${Date.now()}`; // или folderIdCounter++
+            newKey = key || `folder-${Date.now()}`;
             state.folders.push({
               key: newKey,
               label: label || 'New Folder',
               bookIds: [],
             });
             state.activeFolderKey = newKey;
-            state.editingFolderKey = newKey; // переключаем в режим редактирования новой папки
+
+            // Только если создаём новую папку вручную, включаем режим редактирования
+            if (!key) {
+              state.editingFolderKey = newKey;
+            }
           });
           return newKey;
         },
+
         moveBookToFolder: (bookId, targetFolderKey) =>
           set((state) => {
             // Удаляем книгу из всех папок

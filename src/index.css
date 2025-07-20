@@ -296,3 +296,14 @@
 .dark .ant-tabs-dropdown-menu-item:hover {
   background-color: oklch(20% 0.033 256.848);
 }
+/* для горизонтального делителя с текстом */
+.css-dev-only-do-not-override-16dneet.ant-divider-horizontal.ant-divider-with-text::before,
+.css-dev-only-do-not-override-16dneet.ant-divider-horizontal.ant-divider-with-text::after {
+  border-color: rgb(180, 180, 180) !important;
+}
+.dark
+  .css-dev-only-do-not-override-16dneet.ant-divider-horizontal.ant-divider-with-text::before,
+.dark
+  .css-dev-only-do-not-override-16dneet.ant-divider-horizontal.ant-divider-with-text::after {
+  border-color: oklch(16.301% 0.02344 259.946) !important;
+}
