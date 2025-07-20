@@ -1,21 +1,27 @@
-import { Input } from 'antd';
+import { Input, Badge } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { useFolderStore } from '../../store/folderStore';
 import type { InputRef } from 'antd';
+
 interface Props {
   folderKey: string;
   label: string;
   isEditing: boolean;
   setEditingFolderKey: (key: string | null) => void;
+  bookCount: number; // 👈 добавлено
 }
 
-export const EditableTabLabel: React.FC<Props> = ({ folderKey, label }) => {
+export const EditableTabLabel: React.FC<Props> = ({
+  folderKey,
+  label,
+  isEditing,
+  setEditingFolderKey,
+  bookCount,
+}) => {
   const renameFolder = useFolderStore((s) => s.renameFolder);
-  const [isEditing, setIsEditing] = useState(false);
+
   const [value, setValue] = useState(label);
   const inputRef = useRef<InputRef>(null);
-
-  // Таймер для длительного нажатия
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -25,20 +31,23 @@ export const EditableTabLabel: React.FC<Props> = ({ folderKey, label }) => {
     }
   }, [isEditing]);
 
+  useEffect(() => {
+    setValue(label);
+  }, [label]);
+
   const handleRename = () => {
     const trimmed = value.trim();
     if (trimmed && trimmed !== label) {
       renameFolder(folderKey, trimmed);
     }
-    setIsEditing(false);
+    setEditingFolderKey(null);
   };
 
-  // Обработчики для длительного нажатия
   const handleMouseDown = (e: React.MouseEvent) => {
     e.stopPropagation();
     timerRef.current = setTimeout(() => {
-      setIsEditing(true);
-    }, 500); // 500 мс
+      setEditingFolderKey(folderKey);
+    }, 500);
   };
 
   const clearTimer = () => {
@@ -63,19 +72,27 @@ export const EditableTabLabel: React.FC<Props> = ({ folderKey, label }) => {
     <div
       onDoubleClick={(e) => {
         e.stopPropagation();
-        setIsEditing(true);
+        setEditingFolderKey(folderKey);
       }}
       onMouseDown={handleMouseDown}
-      onMouseUp={() => {
-        clearTimer();
-      }}
-      onMouseLeave={() => {
-        clearTimer();
-      }}
+      onMouseUp={clearTimer}
+      onMouseLeave={clearTimer}
       title="Double-click or hold for 0.5s to rename"
       style={{ userSelect: 'none', cursor: 'pointer' }}
+      className="flex items-center gap-2"
     >
       {label}
+      {bookCount > 0 && (
+        <Badge
+          count={bookCount}
+          style={{
+            backgroundColor: '#1677ff',
+            fontSize: 10,
+            boxShadow: 'none',
+          }}
+          size="small"
+        />
+      )}
     </div>
   );
 };

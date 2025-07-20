@@ -24,7 +24,13 @@ export const useFolderStore = create<FolderStoreState>()(
   persist(
     devtools(
       immer<FolderStoreState>((set) => ({
-        folders: [{ key: 'default', label: 'My books', bookIds: [] }],
+        folders: [
+          {
+            key: 'default',
+            label: 'Default folder (double click to rename)',
+            bookIds: [],
+          },
+        ],
         activeFolderKey: 'default',
         editingFolderKey: null,
 

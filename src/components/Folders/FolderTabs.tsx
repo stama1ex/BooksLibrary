@@ -22,6 +22,9 @@ export const FolderTabs = () => {
     editingFolderKey,
   } = useFolderStore();
 
+  // Подписка на книги — чтобы компонент обновлялся при их изменениях
+  const books = useBookStore((state) => state.books);
+
   return (
     <div className="flex flex-col p-8 bg-gray-200 dark:bg-gray-700 transition-colors duration-200 rounded-2xl w-full shadow-2xl break-all">
       <h1 className="text-gray-800 dark:text-white text-2xl font-bold text-center mb-6">
@@ -37,9 +40,9 @@ export const FolderTabs = () => {
             const newName = prompt('Enter folder name:');
             if (newName) addFolder(newName);
           } else if (action === 'remove' && typeof targetKey === 'string') {
-            const booksInFolder = useBookStore
-              .getState()
-              .books.filter((book) => book.folderId === targetKey);
+            const booksInFolder = books.filter(
+              (book) => book.folderId === targetKey
+            );
 
             if (booksInFolder.length > 0) {
               setFolderKeyToDelete(targetKey);
@@ -49,19 +52,26 @@ export const FolderTabs = () => {
             }
           }
         }}
-        items={folders.map((folder) => ({
-          label: (
-            <EditableTabLabel
-              key={folder.key}
-              folderKey={folder.key}
-              label={folder.label}
-              isEditing={editingFolderKey === folder.key}
-              setEditingFolderKey={setEditingFolderKey}
-            />
-          ),
-          key: folder.key,
-          closable: folder.key !== 'default',
-        }))}
+        items={folders.map((folder) => {
+          const bookCount = books.filter(
+            (b) => b.folderId === folder.key
+          ).length;
+
+          return {
+            label: (
+              <EditableTabLabel
+                key={folder.key}
+                folderKey={folder.key}
+                label={folder.label}
+                isEditing={editingFolderKey === folder.key}
+                setEditingFolderKey={setEditingFolderKey}
+                bookCount={bookCount}
+              />
+            ),
+            key: folder.key,
+            closable: folder.key !== 'default',
+          };
+        })}
         className="mb-6"
       />
 

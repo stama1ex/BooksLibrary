@@ -47,13 +47,10 @@ const TrashDrawer: React.FC<TrashDrawerProps> = ({ open, onClose }) => {
     const book = missingFolderModal.book;
     if (!book || !book.originalFolderKey || !book.originalFolderLabel) return;
 
-    // 1. Создаём папку
     addFolder(book.originalFolderLabel, book.originalFolderKey);
 
-    // 2. Восстанавливаем книгу
     const restored = restoreFromTrash(book.id);
 
-    // 3. Назначаем папку (если восстановилось)
     if (restored) {
       useFolderStore
         .getState()
@@ -63,7 +60,6 @@ const TrashDrawer: React.FC<TrashDrawerProps> = ({ open, onClose }) => {
     setMissingFolderModal({ isOpen: false, book: null });
   };
 
-  // Группировка по времени удаления (минутная точность)
   const grouped: Record<string, TrashedBook[]> = {};
   trash.forEach((book) => {
     const key = dayjs(book.deletedAt).format('HH:mm DD/MM');
@@ -93,55 +89,89 @@ const TrashDrawer: React.FC<TrashDrawerProps> = ({ open, onClose }) => {
             {sortedTimestamps.map((timestamp) => (
               <div key={timestamp} className="mb-4">
                 <Divider orientation="center">
-                  <Typography.Text type="secondary" className="!justify-center">
+                  <Typography.Text
+                    type="secondary"
+                    className="flex justify-center"
+                  >
                     {timestamp}
                   </Typography.Text>
                 </Divider>
                 <List
                   dataSource={grouped[timestamp]}
                   itemLayout="horizontal"
-                  renderItem={(book) => (
-                    <List.Item
-                      actions={[
-                        <Button
-                          size="small"
-                          onClick={() => handleRestore(book)}
-                          key="restore"
-                        >
-                          Restore
-                        </Button>,
-                        <Popconfirm
-                          title="Remove this book from trash?"
-                          onConfirm={() => removeFromTrash(book.id)}
-                          okText="Yes"
-                          cancelText="No"
-                          key="delete"
-                        >
-                          <Button danger size="small">
-                            Delete
-                          </Button>
-                        </Popconfirm>,
-                      ]}
-                    >
-                      <List.Item.Meta
-                        title={
-                          <Typography.Text>
+                  renderItem={(book) => {
+                    const folderExists = folders.some(
+                      (f) => f.key === book.originalFolderKey
+                    );
+                    const folderLabel =
+                      folders.find((f) => f.key === book.originalFolderKey)
+                        ?.label ||
+                      book.originalFolderLabel ||
+                      'Unknown Folder';
+
+                    return (
+                      <List.Item className="flex justify-between items-start gap-3 p-0">
+                        {/* Левая колонка: название, автор, тег */}
+                        <div className="flex flex-col flex-grow min-w-0 overflow-hidden">
+                          <Typography.Text
+                            strong
+                            className="truncate mb-1"
+                            title={book.title}
+                          >
                             {book.title}
-                            <Tag
-                              className="!m-0.5 !bg-transparent"
-                              color="geekblue"
-                            >
-                              <span className="!mr-auto">
-                                {book.deletedFromFolderLabel ||
-                                  'Unknown Folder'}
-                              </span>
-                            </Tag>
                           </Typography.Text>
-                        }
-                        description={book.author}
-                      />
-                    </List.Item>
-                  )}
+                          <Typography.Text
+                            type="secondary"
+                            className="truncate mb-1"
+                            title={book.author}
+                          >
+                            {book.author}
+                          </Typography.Text>
+                          <Tag
+                            color={folderExists ? 'geekblue' : 'red'}
+                            className="inline-block max-w-[150px] w-fit whitespace-nowrap overflow-hidden text-ellipsis"
+                            style={{
+                              borderStyle: 'solid',
+                              borderWidth: 1,
+                              borderColor: folderExists ? undefined : 'red',
+                              backgroundColor: 'transparent',
+                            }}
+                            title={
+                              folderExists
+                                ? folderLabel
+                                : `DELETED FOLDER "${folderLabel}"`
+                            }
+                          >
+                            {folderExists
+                              ? folderLabel
+                              : `DELETED FOLDER "${folderLabel}"`}
+                          </Tag>
+                        </div>
+
+                        {/* Правая колонка: кнопки */}
+                        <div className="flex gap-2 flex-shrink-0">
+                          <Button
+                            size="small"
+                            onClick={() => handleRestore(book)}
+                            key="restore"
+                          >
+                            Restore
+                          </Button>
+                          <Popconfirm
+                            title="Remove this book from trash?"
+                            onConfirm={() => removeFromTrash(book.id)}
+                            okText="Yes"
+                            cancelText="No"
+                            key="delete"
+                          >
+                            <Button danger size="small">
+                              Delete
+                            </Button>
+                          </Popconfirm>
+                        </div>
+                      </List.Item>
+                    );
+                  }}
                 />
               </div>
             ))}
@@ -162,7 +192,6 @@ const TrashDrawer: React.FC<TrashDrawerProps> = ({ open, onClose }) => {
         )}
       </Drawer>
 
-      {/* ⬇️ Локальная модалка для восстановления в отсутствующую папку */}
       <MyModal
         open={missingFolderModal.isOpen}
         title="Restore to missing folder?"
