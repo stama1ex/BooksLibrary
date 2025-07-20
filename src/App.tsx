@@ -9,7 +9,7 @@ import TrashDrawer from './components/TrashDrawer';
 import { useState } from 'react';
 import MyButton from './UI/MyButton';
 import ThemeToggleButton from './UI/ThemeToggleButton';
-import { FolderTabs } from './components/FolderTabs';
+import { FolderTabs } from './components/Folders/FolderTabs';
 
 function App() {
   const [openTrash, setOpenTrash] = useState(false);

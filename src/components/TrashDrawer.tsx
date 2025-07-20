@@ -44,7 +44,7 @@ const TrashDrawer: React.FC<TrashDrawerProps> = ({ open, onClose }) => {
   return (
     <Drawer
       title="🗑 Trash Bin"
-      placement="right"
+      placement="left"
       onClose={onClose}
       open={open}
       width={360}

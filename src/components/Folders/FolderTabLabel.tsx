@@ -1,7 +1,7 @@
 // EditableTabLabel.tsx
 import { Input } from 'antd';
 import { useEffect, useRef, useState } from 'react';
-import { useFolderStore } from '../store/folderStore';
+import { useFolderStore } from '../../store/folderStore';
 import type { InputRef } from 'antd';
 
 interface Props {

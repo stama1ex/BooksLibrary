@@ -1,9 +1,9 @@
 import { Tabs } from 'antd';
-import { useFolderStore } from '../store/folderStore';
-import BookList from './BookList';
+import { useFolderStore } from '../../store/folderStore';
+import BookList from '../BookList';
 import { EditableTabLabel } from './EditableTabLabel';
-import MyModal from '../UI/MyModal';
-import { useModalStore } from '../store/modalStore';
+import MyModal from '../../UI/MyModal';
+import { useModalStore } from '../../store/modalStore';
 
 export const FolderTabs = () => {
   const isModalOpen = useModalStore((s) => s.isModalOpen);
