@@ -1,0 +1,89 @@
+import { create } from 'zustand';
+import { persist, devtools } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
+
+export interface Folder {
+  key: string;
+  label: string;
+  bookIds: string[]; // ссылки на книги
+}
+
+interface FolderStoreState {
+  folders: Folder[];
+  activeFolderKey: string;
+  editingFolderKey: string | null; // новое поле для текущей редактируемой папки
+  setActiveFolder: (key: string) => void;
+  setEditingFolderKey: (key: string | null) => void; // новое действие
+  addFolder: (label?: string) => void; // можно сделать label необязательным
+  removeFolder: (key: string) => void;
+  renameFolder: (key: string, newLabel: string) => void;
+  moveBookToFolder: (bookId: string, targetFolderKey: string) => void;
+}
+
+export const useFolderStore = create<FolderStoreState>()(
+  persist(
+    devtools(
+      immer<FolderStoreState>((set) => ({
+        folders: [{ key: 'default', label: 'My books', bookIds: [] }],
+        activeFolderKey: 'default',
+        editingFolderKey: null,
+
+        setActiveFolder: (key) =>
+          set((state) => {
+            state.activeFolderKey = key;
+          }),
+        setEditingFolderKey: (key) =>
+          set((state) => {
+            state.editingFolderKey = key;
+          }),
+
+        addFolder: (label) =>
+          set((state) => {
+            const newKey = `folder-${Date.now()}`; // или folderIdCounter++
+            state.folders.push({
+              key: newKey,
+              label: label || 'New Folder',
+              bookIds: [],
+            });
+            state.activeFolderKey = newKey;
+            state.editingFolderKey = newKey; // переключаем в режим редактирования новой папки
+          }),
+        moveBookToFolder: (bookId, targetFolderKey) =>
+          set((state) => {
+            // Удаляем книгу из всех папок
+            state.folders.forEach((f) => {
+              f.bookIds = f.bookIds.filter((id) => id !== bookId);
+            });
+            // Добавляем в целевую папку
+            const targetFolder = state.folders.find(
+              (f) => f.key === targetFolderKey
+            );
+            if (targetFolder) {
+              targetFolder.bookIds.push(bookId);
+            }
+          }),
+
+        renameFolder: (key, newLabel) =>
+          set((state) => {
+            const folder = state.folders.find((f) => f.key === key);
+            if (folder) folder.label = newLabel;
+            state.editingFolderKey = null; // после переименования выходим из режима редактирования
+          }),
+
+        removeFolder: (key) =>
+          set((state) => {
+            state.folders = state.folders.filter((f) => f.key !== key);
+            if (state.activeFolderKey === key)
+              state.activeFolderKey = 'default';
+            if (state.editingFolderKey === key) state.editingFolderKey = null;
+          }),
+
+        // другие методы...
+      }))
+    ),
+    {
+      name: 'folder-store',
+      version: 1,
+    }
+  )
+);

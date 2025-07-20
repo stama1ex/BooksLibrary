@@ -6,6 +6,7 @@ import { immer } from 'zustand/middleware/immer';
 import type { Book, BookFormData } from '../types';
 import { createNewBook } from '../utils/createNewBook';
 import { useTrashStore } from './trashStore';
+import { useFolderStore } from './folderStore';
 
 interface BookStoreState {
   books: Readonly<Book[]>;
@@ -26,7 +27,11 @@ export const useBookStore = create<BookStoreState>()(
 
         addBook: (data) =>
           set((state) => {
-            state.books.push(createNewBook(data));
+            const folderId = useFolderStore.getState().activeFolderKey;
+            const newBook = createNewBook({ ...data, folderId });
+
+            state.books.push(newBook);
+            useFolderStore.getState().moveBookToFolder(newBook.id, folderId);
           }),
 
         deleteBook: (id) => {
@@ -59,7 +64,11 @@ export const useBookStore = create<BookStoreState>()(
             const res = await axios.get(url);
             const data = res.data as BookFormData;
             set((state) => {
-              state.books.push(createNewBook(data));
+              const folderId = useFolderStore.getState().activeFolderKey;
+              const newBook = createNewBook({ ...data, folderId });
+
+              state.books.push(newBook);
+              useFolderStore.getState().moveBookToFolder(newBook.id, folderId);
             });
           } catch (error) {
             const message = axios.isAxiosError(error)

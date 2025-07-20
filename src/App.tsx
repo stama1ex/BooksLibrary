@@ -5,12 +5,11 @@ import { ToastContainer } from 'react-toastify';
 import Header from './UI/Header';
 import Form from './components/Form';
 import Filters from './components/Filters';
-import BookList from './components/BookList';
 import TrashDrawer from './components/TrashDrawer';
 import { useState } from 'react';
 import MyButton from './UI/MyButton';
 import ThemeToggleButton from './UI/ThemeToggleButton';
-import MyTabs from './components/MyTabs';
+import { FolderTabs } from './components/FolderTabs';
 
 function App() {
   const [openTrash, setOpenTrash] = useState(false);
@@ -69,8 +68,7 @@ function App() {
 
         <div className="flex flex-col w-full md:max-w-[50%] gap-4 items-center justify-center mb-auto">
           <Filters />
-          <MyTabs />
-          <BookList />
+          <FolderTabs />
         </div>
       </div>
     </>

@@ -10,10 +10,11 @@ const Form: React.FC = () => {
   const fetchAndAddRandomBook = useBookStore((s) => s.fetchAndAddRandomBook);
   const formData = useFilterStore((s) => s.formData);
   const setFormData = useFilterStore((s) => s.setFormData);
+  const handleAddBook = useAddBookHandler();
 
   return (
     <form
-      onSubmit={useAddBookHandler()}
+      onSubmit={handleAddBook}
       className="flex flex-col w-full md:w-auto p-8 bg-gray-200 dark:bg-gray-700 transition-colors duration-200 rounded-2xl mb-auto shadow-2xl"
     >
       <h1 className="dark:text-white text-gray-800 text-2xl font-bold text-center">
