@@ -10,6 +10,7 @@ import TrashDrawer from './components/TrashDrawer';
 import { useState } from 'react';
 import MyButton from './UI/MyButton';
 import ThemeToggleButton from './UI/ThemeToggleButton';
+import MyTabs from './components/MyTabs';
 
 function App() {
   const [openTrash, setOpenTrash] = useState(false);
@@ -68,6 +69,7 @@ function App() {
 
         <div className="flex flex-col w-full md:max-w-[50%] gap-4 items-center justify-center mb-auto">
           <Filters />
+          <MyTabs />
           <BookList />
         </div>
       </div>
