@@ -246,3 +246,40 @@
 #trash-btn:hover {
   box-shadow: 0 6px 20px rgba(255, 0, 0, 0.5);
 }
+/* ТАБЫ ТАБЫ ТАБЫ */
+.ant-tabs-tab-active {
+  border-bottom: 5px solid white !important;
+}
+.dark .ant-tabs-tab {
+  color: white !important;
+}
+
+.dark .ant-tabs-tab-active {
+  /* color: white !important; */
+  /* font-weight: 500; */
+  background-color: oklch(27.8% 0.033 256.848) !important;
+}
+
+/* Стили для иконок раскрытия / сворачивания (плюс и минус) */
+.dark .anticon-plus,
+.dark .anticon-minus {
+  color: white !important;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.dark [data-icon='close'] {
+  color: white;
+  fill: white;
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+.dark [data-icon='close']:hover {
+  color: #ff4d4f; /* красный при наведении */
+  fill: #ff4d4f;
+}
+
+.dark [data-icon='close']:active {
+  color: #ff7875;
+  fill: #ff7875;
+}

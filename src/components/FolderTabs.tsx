@@ -4,8 +4,15 @@ import BookList from './BookList';
 import { EditableTabLabel } from './EditableTabLabel';
 
 export const FolderTabs = () => {
-  const { folders, activeFolderKey, setActiveFolder, addFolder, removeFolder } =
-    useFolderStore();
+  const {
+    folders,
+    activeFolderKey,
+    setActiveFolder,
+    addFolder,
+    removeFolder,
+    setEditingFolderKey,
+    editingFolderKey, // добавьте это!
+  } = useFolderStore();
 
   return (
     <div className="flex flex-col p-8 bg-gray-200 dark:bg-gray-700 transition-colors duration-200 rounded-2xl w-full shadow-2xl break-all">
@@ -21,6 +28,8 @@ export const FolderTabs = () => {
           if (action === 'add') {
             const newName = prompt('Enter folder name:');
             if (newName) addFolder(newName);
+            // const newKey = addFolder('New Folder');
+            // setEditingFolderKey(newKey);
           } else if (action === 'remove' && typeof targetKey === 'string') {
             removeFolder(targetKey);
           }
@@ -31,6 +40,8 @@ export const FolderTabs = () => {
               key={folder.key}
               folderKey={folder.key}
               label={folder.label}
+              isEditing={editingFolderKey === folder.key} // передаем!
+              setEditingFolderKey={setEditingFolderKey} // передаем!
             />
           ),
           key: folder.key,

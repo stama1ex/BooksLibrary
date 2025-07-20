@@ -1,6 +1,7 @@
 import { Drawer, Button, List, Typography, Empty, Popconfirm } from 'antd';
 import { useTrashStore } from '../store/trashStore';
 import { useBookStore } from '../store/bookStore';
+import type { BookFormData } from '../types';
 
 interface TrashDrawerProps {
   open: boolean;
@@ -15,7 +16,7 @@ const TrashDrawer: React.FC<TrashDrawerProps> = ({ open, onClose }) => {
   const handleRestore = (id: string) => {
     const restored = useTrashStore.getState().restoreFromTrash(id); // ✅ уже копия
     if (restored) {
-      useBookStore.getState().addBook(restored);
+      useBookStore.getState().addBook(restored as BookFormData);
     }
   };
 

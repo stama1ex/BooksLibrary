@@ -6,6 +6,8 @@ import type { InputRef } from 'antd';
 interface Props {
   folderKey: string;
   label: string;
+  isEditing: boolean;
+  setEditingFolderKey: (key: string | null) => void;
 }
 
 export const EditableTabLabel: React.FC<Props> = ({ folderKey, label }) => {
