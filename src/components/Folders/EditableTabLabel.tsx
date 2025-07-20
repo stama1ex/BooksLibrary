@@ -59,6 +59,7 @@ export const EditableTabLabel: React.FC<Props> = ({
 
   return isEditing ? (
     <Input
+      maxLength={50}
       ref={inputRef}
       value={value}
       onChange={(e) => setValue(e.target.value)}
@@ -66,7 +67,13 @@ export const EditableTabLabel: React.FC<Props> = ({
       onPressEnter={handleRename}
       size="small"
       onClick={(e) => e.stopPropagation()}
-      onKeyDown={(e) => e.stopPropagation()}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleRename();
+        }
+        e.stopPropagation();
+      }}
     />
   ) : (
     <div

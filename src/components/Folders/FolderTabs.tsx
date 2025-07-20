@@ -82,8 +82,17 @@ export const FolderTabs = () => {
         content="This folder contains books. Are you sure you want to delete it?"
         onOk={() => {
           if (folderKeyToDelete) {
+            // Удаляем все книги, находящиеся в этой папке
+            books
+              .filter((book) => book.folderId === folderKeyToDelete)
+              .forEach((book) => {
+                useBookStore.getState().deleteBook(book.id);
+              });
+
+            // Затем удаляем папку
             removeFolder(folderKeyToDelete);
           }
+
           setIsDeleteModalOpen(false);
           setFolderKeyToDelete(null);
         }}

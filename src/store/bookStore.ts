@@ -48,14 +48,15 @@ export const useBookStore = create<BookStoreState>()(
 
           set((state) => {
             state.books = state.books.filter((b) => b.id !== id);
-          });
 
-          useTrashStore.getState().addToTrash({
-            ...bookToTrash,
-            deletedAt: new Date().toISOString(),
-            deletedFromFolderLabel: folder?.label,
-            originalFolderKey: bookToTrash.folderId ?? 'unknown',
-            originalFolderLabel: folder?.label ?? 'Unknown Folder',
+            // Добавляем в корзину здесь, чтобы избежать асинхронных вызовов
+            useTrashStore.getState().addToTrash({
+              ...bookToTrash,
+              deletedAt: new Date().toISOString(),
+              deletedFromFolderLabel: folder?.label,
+              originalFolderKey: bookToTrash.folderId ?? 'unknown',
+              originalFolderLabel: folder?.label ?? 'Unknown Folder',
+            });
           });
         },
 

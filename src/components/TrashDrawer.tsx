@@ -110,7 +110,10 @@ const TrashDrawer: React.FC<TrashDrawerProps> = ({ open, onClose }) => {
                       'Unknown Folder';
 
                     return (
-                      <List.Item className="flex justify-between items-start gap-3 p-0">
+                      <List.Item
+                        key={book.id}
+                        className="flex justify-between items-start gap-3 p-0"
+                      >
                         {/* Левая колонка: название, автор, тег */}
                         <div className="flex flex-col flex-grow min-w-0 overflow-hidden">
                           <Typography.Text

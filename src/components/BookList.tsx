@@ -76,7 +76,7 @@ const BookList: React.FC<BookListProps> = ({ folderId }) => {
     </DragDropContext>
   ) : (
     <h2 className="text-gray-400 dark:text-gray-300 text-xl font-normal text-center">
-      It is empty now
+      It's empty now
     </h2>
   );
 };
