@@ -27,7 +27,7 @@ export const useFolderStore = create<FolderStoreState>()(
         folders: [
           {
             key: 'default',
-            label: 'Default folder (double click to rename)',
+            label: 'Default folder',
             bookIds: [],
           },
         ],

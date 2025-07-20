@@ -1,12 +1,21 @@
-import { Tabs } from 'antd';
+import { Tabs, Popover } from 'antd';
 import { useFolderStore } from '../../store/folderStore';
 import BookList from '../BookList';
 import { EditableTabLabel } from './EditableTabLabel';
 import MyModal from '../../UI/MyModal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useBookStore } from '../../store/bookStore';
 
 export const FolderTabs = () => {
+  const [isPopoverVisible, setIsPopoverVisible] = useState(false);
+  useEffect(() => {
+    const hasShown = localStorage.getItem('folderRenamePopoverShown');
+    if (!hasShown) {
+      setIsPopoverVisible(true);
+      localStorage.setItem('folderRenamePopoverShown', 'true');
+    }
+  }, []);
+
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [folderKeyToDelete, setFolderKeyToDelete] = useState<string | null>(
     null
@@ -57,17 +66,45 @@ export const FolderTabs = () => {
             (b) => b.folderId === folder.key
           ).length;
 
+          const editableLabel = (
+            <EditableTabLabel
+              key={folder.key}
+              folderKey={folder.key}
+              label={folder.label}
+              isEditing={editingFolderKey === folder.key}
+              setEditingFolderKey={(key) => {
+                setEditingFolderKey(key);
+                if (isPopoverVisible) setIsPopoverVisible(false);
+              }}
+              bookCount={bookCount}
+            />
+          );
+
+          const labelWithPopover =
+            folder.key === 'default' && isPopoverVisible ? (
+              <Popover
+                content="Double click to rename"
+                open={isPopoverVisible}
+                trigger="hover"
+                onOpenChange={(visible) => {
+                  if (visible) setIsPopoverVisible(false); // скрываем навсегда после первого показа
+                }}
+              >
+                <div
+                  tabIndex={0}
+                  onClick={() => {
+                    setIsPopoverVisible(false); // скрываем при клике
+                  }}
+                >
+                  {editableLabel}
+                </div>
+              </Popover>
+            ) : (
+              editableLabel
+            );
+
           return {
-            label: (
-              <EditableTabLabel
-                key={folder.key}
-                folderKey={folder.key}
-                label={folder.label}
-                isEditing={editingFolderKey === folder.key}
-                setEditingFolderKey={setEditingFolderKey}
-                bookCount={bookCount}
-              />
-            ),
+            label: labelWithPopover,
             key: folder.key,
             closable: folder.key !== 'default',
           };
