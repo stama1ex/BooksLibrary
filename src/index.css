@@ -283,3 +283,8 @@
   color: #ff7875;
   fill: #ff7875;
 }
+.ant-divider-inner-text {
+  width: 100% !important;
+  text-align: center;
+  font-weight: 500;
+}

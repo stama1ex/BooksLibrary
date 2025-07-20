@@ -10,3 +10,8 @@ export interface BookFormData {
   author: string;
   folderId?: string;
 }
+
+export interface TrashedBook extends Book {
+  deletedFromFolderLabel?: string;
+  deletedAt: string; // строка в формате dayjs
+}

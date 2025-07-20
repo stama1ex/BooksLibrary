@@ -52,6 +52,7 @@ export const useBookStore = create<BookStoreState>()(
 
           useTrashStore.getState().addToTrash({
             ...bookToTrash,
+            deletedAt: new Date().toISOString(), // вот это!
             deletedFromFolderLabel: folder?.label,
           });
         },

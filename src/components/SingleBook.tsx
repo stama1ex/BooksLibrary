@@ -5,7 +5,6 @@ import { useFilterStore } from '../store/filterStore';
 import type { Book } from '../types';
 import MyModal from '../UI/MyModal';
 import { useState } from 'react';
-
 interface SingleBookProps {
   isDragging?: boolean;
   book: Book;
@@ -20,10 +19,10 @@ const SingleBook: React.FC<SingleBookProps> = ({
   const filterData = useFilterStore((s) => s.filterData);
   const filterMode = useFilterStore((s) => s.filterMode);
   const combinedFilter = useFilterStore((s) => s.combinedFilter);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isBookModalOpen, setIsBookModalOpen] = useState(false);
   const handleDeleteClick = () => {
     if (book.isFavorite) {
-      setIsModalOpen(true);
+      setIsBookModalOpen(true);
     } else {
       deleteBook(book.id);
     }
@@ -31,7 +30,7 @@ const SingleBook: React.FC<SingleBookProps> = ({
 
   const handleConfirmDelete = () => {
     deleteBook(book.id);
-    setIsModalOpen(false);
+    setIsBookModalOpen(false);
   };
   return (
     <div
@@ -70,9 +69,9 @@ const SingleBook: React.FC<SingleBookProps> = ({
           <DeleteOutlined />
         </span>
         <MyModal
-          open={isModalOpen}
+          open={isBookModalOpen}
           onOk={handleConfirmDelete}
-          onCancel={() => setIsModalOpen(false)}
+          onCancel={() => setIsBookModalOpen(false)}
           title="Move book to trash?"
           content="This book is in your favorites. Are you sure you want to remove it?"
         />

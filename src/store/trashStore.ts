@@ -4,13 +4,11 @@ import { devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import type { Book } from '../types';
 import { useBookStore } from './bookStore';
+import type { TrashedBook } from '../types';
 
-interface TrashBook extends Book {
-  deletedFromFolderLabel?: string;
-}
 interface TrashStoreState {
-  trash: TrashBook[];
-  addToTrash: (book: TrashBook) => void;
+  trash: TrashedBook[];
+  addToTrash: (book: TrashedBook) => void;
   restoreFromTrash: (id: string) => Book | undefined;
   removeFromTrash: (id: string) => void;
   clearTrash: () => void;
@@ -28,7 +26,7 @@ export const useTrashStore = create<TrashStoreState>()(
           }),
 
         restoreFromTrash: (id) => {
-          let restored: TrashBook | undefined;
+          let restored: TrashedBook | undefined;
 
           set((state) => {
             const index = state.trash.findIndex((b) => b.id === id);
