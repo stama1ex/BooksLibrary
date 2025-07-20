@@ -1,7 +1,5 @@
-import { Drawer, Button, List, Typography, Empty, Popconfirm } from 'antd';
+import { Drawer, Button, List, Typography, Empty, Popconfirm, Tag } from 'antd';
 import { useTrashStore } from '../store/trashStore';
-import { useBookStore } from '../store/bookStore';
-import type { BookFormData } from '../types';
 
 interface TrashDrawerProps {
   open: boolean;
@@ -14,10 +12,7 @@ const TrashDrawer: React.FC<TrashDrawerProps> = ({ open, onClose }) => {
   const clearTrash = useTrashStore((s) => s.clearTrash);
 
   const handleRestore = (id: string) => {
-    const restored = useTrashStore.getState().restoreFromTrash(id); // ✅ уже копия
-    if (restored) {
-      useBookStore.getState().addBook(restored as BookFormData);
-    }
+    useTrashStore.getState().restoreFromTrash(id); // ← и всё
   };
 
   return (
@@ -40,6 +35,7 @@ const TrashDrawer: React.FC<TrashDrawerProps> = ({ open, onClose }) => {
                 <Button size="small" onClick={() => handleRestore(book.id)}>
                   Restore
                 </Button>,
+
                 <Popconfirm
                   title="Remove this book from trash?"
                   onConfirm={() => removeFromTrash(book.id)}
@@ -53,7 +49,14 @@ const TrashDrawer: React.FC<TrashDrawerProps> = ({ open, onClose }) => {
               ]}
             >
               <List.Item.Meta
-                title={<Typography.Text>{book.title}</Typography.Text>}
+                title={
+                  <Typography.Text>
+                    {book.title}
+                    <Tag className="!m-0.5 !bg-transparent" color="geekblue">
+                      {book.deletedFromFolderLabel || 'Unknown Folder'}
+                    </Tag>
+                  </Typography.Text>
+                }
                 description={book.author}
               />
             </List.Item>

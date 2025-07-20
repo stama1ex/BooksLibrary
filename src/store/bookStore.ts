@@ -16,6 +16,7 @@ interface BookStoreState {
   toggleFavorite: (id: string) => void;
   setBooks: (books: Book[]) => void;
   fetchAndAddRandomBook: (url: string) => Promise<void>;
+  addBookBack: (book: Book) => void;
 }
 
 export const useBookStore = create<BookStoreState>()(
@@ -40,11 +41,19 @@ export const useBookStore = create<BookStoreState>()(
             .books.find((b) => b.id === id);
           if (!bookToTrash) return;
 
+          const folderState = useFolderStore.getState();
+          const folder = folderState.folders.find(
+            (f) => f.key === bookToTrash.folderId
+          );
+
           set((state) => {
             state.books = state.books.filter((b) => b.id !== id);
           });
 
-          useTrashStore.getState().addToTrash({ ...bookToTrash });
+          useTrashStore.getState().addToTrash({
+            ...bookToTrash,
+            deletedFromFolderLabel: folder?.label,
+          });
         },
 
         toggleFavorite: (id) =>
@@ -56,6 +65,10 @@ export const useBookStore = create<BookStoreState>()(
         setBooks: (books) =>
           set((state) => {
             state.books = books;
+          }),
+        addBookBack: (book: Book) =>
+          set((state) => {
+            state.books.push(book);
           }),
 
         fetchAndAddRandomBook: async (url: string) => {
