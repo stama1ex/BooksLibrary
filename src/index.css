@@ -288,3 +288,11 @@
   text-align: center;
   font-weight: 500;
 }
+.dark .ant-tabs-dropdown-menu-item {
+  background-color: oklch(42% 0.033 256.848);
+  color: white;
+  overflow: auto;
+}
+.dark .ant-tabs-dropdown-menu-item:hover {
+  background-color: oklch(20% 0.033 256.848);
+}
