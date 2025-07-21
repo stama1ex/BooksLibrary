@@ -7,6 +7,7 @@ import {
   Popconfirm,
   Tag,
   Divider,
+  message,
 } from 'antd';
 import { useTrashStore } from '../store/trashStore';
 import dayjs from 'dayjs';
@@ -34,10 +35,20 @@ const TrashDrawer: React.FC<TrashDrawerProps> = ({ open, onClose }) => {
     book: TrashedBook | null;
   }>({ isOpen: false, book: null });
 
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const success = () => {
+    messageApi.open({
+      type: 'success',
+      content: 'The book was successfully restored',
+    });
+  };
+
   const handleRestore = (book: TrashedBook) => {
     const folderExists = folders.some((f) => f.key === book.originalFolderKey);
     if (folderExists) {
       restoreFromTrash(book.id);
+      success();
     } else {
       setMissingFolderModal({ isOpen: true, book });
     }
@@ -52,6 +63,7 @@ const TrashDrawer: React.FC<TrashDrawerProps> = ({ open, onClose }) => {
     const restored = restoreFromTrash(book.id);
 
     if (restored) {
+      success();
       useFolderStore
         .getState()
         .moveBookToFolder(book.id, book.originalFolderKey);
@@ -75,6 +87,7 @@ const TrashDrawer: React.FC<TrashDrawerProps> = ({ open, onClose }) => {
 
   return (
     <>
+      {contextHolder}
       <Drawer
         title="🗑 Trash Bin"
         placement="left"

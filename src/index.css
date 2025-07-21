@@ -307,3 +307,7 @@
   .css-dev-only-do-not-override-16dneet.ant-divider-horizontal.ant-divider-with-text::after {
   border-color: oklch(16.301% 0.02344 259.946) !important;
 }
+.dark .ant-message-notice-content {
+  background-color: oklch(20% 0.033 256.848) !important;
+  color: white;
+}
