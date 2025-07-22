@@ -1,12 +1,11 @@
 import { Switch } from '@headlessui/react';
-import type { MenuProps } from 'antd';
-import { Dropdown, Space } from 'antd';
+import { Dropdown, Space, type MenuProps } from 'antd';
 import { DownOutlined, FilterOutlined } from '@ant-design/icons';
 import MyInput from './../UI/MyInput';
 import { MyButton } from './../UI/MyButton';
 import { useFilterStore } from '../store/filterStore';
 
-const Filters: React.FC = () => {
+const Filters = () => {
   const filterData = useFilterStore((s) => s.filterData);
   const setFilterData = useFilterStore((s) => s.setFilterData);
   const onlyFavorite = useFilterStore((s) => s.onlyFavorite);
@@ -26,7 +25,11 @@ const Filters: React.FC = () => {
     {
       key: 'split',
       label: 'Split Filter (Title & Author)',
-      icon: <FilterOutlined />,
+      icon: (
+        <span className="mb-0.5">
+          <FilterOutlined /> <FilterOutlined />
+        </span>
+      ),
     },
   ];
 

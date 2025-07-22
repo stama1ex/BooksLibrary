@@ -1,8 +1,16 @@
 {
   "files": [],
   "compilerOptions": {
-    "jsx": "react-jsx", // или "react"
-    "types": ["react"]
+    "jsx": "react-jsx",
+    "target": "ESNext",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["react", "jest", "node"]
   },
   "references": [
     { "path": "./tsconfig.app.json" },

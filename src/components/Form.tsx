@@ -5,7 +5,7 @@ import { useBookStore } from '../store/bookStore';
 import { useFilterStore } from '../store/filterStore';
 import { useAddBookHandler } from '../utils/hooks/useHandleAddBook';
 
-const Form: React.FC = () => {
+const Form = () => {
   const isLoading = useBookStore((s) => s.isLoading);
   const fetchAndAddRandomBook = useBookStore((s) => s.fetchAndAddRandomBook);
   const formData = useFilterStore((s) => s.formData);

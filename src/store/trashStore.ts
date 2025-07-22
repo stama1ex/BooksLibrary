@@ -40,7 +40,6 @@ export const useTrashStore = create<TrashStoreState>()(
             const { addBookBack } = useBookStore.getState();
             addBookBack(restored);
           }
-
           return restored;
         },
 

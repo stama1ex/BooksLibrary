@@ -91,8 +91,6 @@ export const useFolderStore = create<FolderStoreState>()(
               state.activeFolderKey = 'default';
             if (state.editingFolderKey === key) state.editingFolderKey = null;
           }),
-
-        // другие методы...
       }))
     ),
     {
